@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from "expo-router";
 import { TouchableOpacity, StyleSheet, Text, View, Button, TextInput } from 'react-native';
-import { getAuth } from "firebase/auth";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 export default function TopPage() {
     const [open, setIsOpen] = useState(false);
@@ -14,24 +14,13 @@ export default function TopPage() {
     const handleAddTodo = () => {
         const auth = getAuth();
         const user = auth.currentUser;
-        user.signOut()
     };
-    signOutUser = async () => {
-        try {
-            await firebase.auth().signOut();
-            navigate('Auth');
-        } catch (e) {
-            console.log(e);
-        }
-    }
+
     const { name, lastname, username } = useSearchParams();
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>¡Hola {name}!</Text>
-            <TouchableOpacity style={styles.button} onPress={signOutUser()}>
-                <Text style={styles.buttonText}>Log Out</Text>
-            </TouchableOpacity>
         </View>
     );
 }
