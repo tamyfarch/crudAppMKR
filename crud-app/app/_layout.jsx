@@ -14,7 +14,7 @@ export default function layout() {
                 },
             }}
         >
-            <Stack.Screen name="details" options={{}} />
+            <Stack.Screen name="Profile" options={{}} />
         </Stack>
     )
 }

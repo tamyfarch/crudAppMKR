@@ -1,30 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Modal, Pressable, ScrollView } from 'react-native';
 import ListItem from './ListItem';
 import EditItem from './EditItem';
 import { Button, Icon } from 'react-native-elements'
 import { Stack, usePathname, useRouter, useSearchParams } from "expo-router";
+import { collection, addDoc, getDocs, deleteDoc, updateDoc, doc, where, query } from "firebase/firestore";
+import { app, database } from '../../firebase';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 
 export default function List({ todos, setTodos }) {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  console.log(user, 'user afsdfasdfasdfasdf')
+  const collectionRef = collection(database, "user_tasks");
   const [editTodo, setEditTodo] = useState(null);
-  const [deleteTodo, setDeleteTodo] = useState(null);
+  const [deleteTodo, setDeleteTodo] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [tasks, setTasks] = useState([])
+  const [ taskId, setTaskId ] = useState('')
   const router = useRouter();
 
-  const deleteTask = (task) => {
+/*   const uid = user.uid */
+
+  /*const deleteTask = (task) => {
     setTodos(todos.filter(el => el.id !== task.id))
     setDeleteTodo(null)
     setDeleteModalVisible(false)
-  }
+  }*/
 
-  const handleSaveTodo = (updatedTodo) => {
-    const updatedTodos = todos.map((todo) =>
-      todo.id === updatedTodo.id ? updatedTodo : todo
-    );
+  const deleteTask = async (deleteTodo) => {
+    try {
+      // Delete the document with the specified ID
+      await deleteDoc(doc(database, 'user_tasks', deleteTodo.id));
+      console.log(item.id)
+      // Remove the deleted task from the list of tasks
+      const updatedTodos = todos.filter((todo) => todo.id !== deleteTodo.id);
+      setTodos(updatedTodos);
+      setDeleteTodo(null)
+      setDeleteModalVisible(false)
+      console.log('funciona')
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
+  };
+  
+
+  
+  
+
+  /* updateDoc(doc(database, 'user_tasks'), {
+    task_data: updatedTodos
+  }).then(() => {
     setTodos(updatedTodos);
     setEditTodo(null);
-  };
+    console.log('updated')
+  }).catch((error) => {
+    console.log(error)
+  }) */
 
   const handleEditTodo = (todo) => {
     setEditTodo(todo);
@@ -34,6 +68,43 @@ export default function List({ todos, setTodos }) {
     setDeleteTodo(todo);
     setDeleteModalVisible(true)
   };
+
+ /*  const getData = () => {
+    getDocs(collectionRef)
+    .then((response) => {
+      setTasks(response.docs.map((item) => {
+          return item.data()
+      }))
+    })
+  } */
+
+  const getData = () => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        getDocs(query(collection(database, "user_tasks"), where('uid','==', user.uid))).then(docSnap => {
+          setTasks(docSnap.docs.map((item) => {
+            return { ...item.data(), id: item.id }
+        }))
+    });
+        // ...
+      } else {
+        // User is signed out
+        // ...
+      }
+    });
+    
+  }
+
+  useEffect(() => {
+    getData();
+  }, [todos]);
+
+
+  console.log(tasks, 'tasks')
+
   if (editTodo) {
     return <View style={styles.centeredView}>
       <Modal
@@ -46,7 +117,7 @@ export default function List({ todos, setTodos }) {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.buttonText}>Edit Your Task</Text>
-            <EditItem todo={editTodo} onSaveTodo={handleSaveTodo} />
+            <EditItem todo={editTodo} />
           </View>
         </View>
       </Modal>
@@ -57,20 +128,21 @@ export default function List({ todos, setTodos }) {
     <View>
       <Text style={styles.title}>My Tasks</Text>
       <ScrollView style={styles.contentContainer}>
-      {todos.map((item, index) => {
+      {tasks.map((item, index) => {
         return (
           <View key={index} style={styles.item}>
             <View style={styles.container}>
-              <ListItem key={index} id={item.id} text={item.text} />
+              <ListItem key={index} id={item.uid} text={item.task_data} />
               <TouchableOpacity style={styles.iconContainer} onPress={() => { handleEditTodo(item), setModalVisible(true) }}>
                 <Icon style={styles.editIcon} name='edit' />
                 <Text style={styles.deleteButton}>Edit</Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.iconContainer} onPress={() => {setDeleteTodo(item), setDeleteModalVisible(true)}}>
+            <TouchableOpacity style={styles.iconContainer} onPress={() => {handleDeleteTodo(item)}}>
               <Icon name='delete' />
               <Text style={styles.deleteButton}>Delete</Text>
             </TouchableOpacity>
+            
             {deleteModalVisible &&
               <Modal
                 animationType="slide"
@@ -90,7 +162,7 @@ export default function List({ todos, setTodos }) {
                     </Pressable>
                     <Pressable
                       style={[styles.button, styles.buttonSave]}
-                      onPress={() => deleteTask(deleteTodo)}>
+                      onPress={() => {deleteTask(deleteTodo), setDeleteModalVisible(!deleteModalVisible)}}>
                       <Text style={styles.textStyle}>Eliminar</Text>
                     </Pressable>
                     </View>

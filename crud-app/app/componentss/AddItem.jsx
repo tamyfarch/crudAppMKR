@@ -19,6 +19,8 @@ export default function AddItem({ onAddTodo }) {
         })
         setText('');
     };
+    
+    
 
     return (
         <View style={styles.container}>

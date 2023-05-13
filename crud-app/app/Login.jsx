@@ -46,7 +46,6 @@ const login = () => {
 
       console.log(user);
       if (user) {
-/*         router.push(`/details?email=${email}`); */
         router.push('/')
       }
 
@@ -58,7 +57,7 @@ const login = () => {
   };
 
   const onSignUpPress = () => {
-    router.push("/signUp");
+    router.push("/SignUp");
   };
 
   return (

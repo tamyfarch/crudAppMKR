@@ -8,14 +8,6 @@ import React, { useState, useEffect } from 'react';
 import HomeScreen from "./pages/HomeScreen";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-//generate array of 10 tasks with details
-const tasks = Array.from({ length: 10 }, (v, i) => ({
-    id: i,
-    title: `Task ${i}`,
-    description: `This is the description of task ${i}`,
-    completed: false,
-}));
-
 export default function App() {
     const [todos, setTodos] = useState([]);
 
@@ -57,43 +49,7 @@ export default function App() {
                     },
                 }}
             />
-            {/*
-            <Text style={{ color: 'black' }} > Home </Text>
-            <StatusBar style="auto" />
-            <Link href={'/details?name=pepe&lastname=perez'} >
-                Go to details
-            </Link>*/}
             
-
-            {/* 
-            //duplicado
-            <Link href={'/details?name=pepe&lastname=perez'} >
-                Go to details
-            </Link>
-
-            <Link href={{ pathname: '/details', params: { name: 'john', lastname: 'doe' } }} >
-                Go to details
-            </Link>
-            <Link href={{ pathname: '/pepe', params: { name: 'john', lastname: 'doe' } }} >
-                Go to dynamic route
-            </Link> */}
-
-            {/* {tasks.map((task) => (
-                <Link key={task.id} href={{ pathname: `/${task.id}`, params: { ...task } }} >
-                    <Text style={{ }} > {task.title} </Text>
-                </Link>
-            ))} */}
-            {/*<Link href={{ pathname: '/login', params: { title: 'users', description: 'this is the users page' } }} >
-                <Text style={{  }} > login </Text>
-        </Link>
-            <SafeAreaView style={styles.container}>
-                <TopPage/>
-                <AddItem onAddTodo={handleAddTodo} />
-                <List todos={todos} setTodos={setTodos} />
-            </SafeAreaView>
-            <SafeAreaView style={styles.bottomNavContainer}>
-                <BottomNav/>
-            </SafeAreaView>*/}
             <SafeAreaView style={styles.container}>
                 <HomeScreen/>
             </SafeAreaView>

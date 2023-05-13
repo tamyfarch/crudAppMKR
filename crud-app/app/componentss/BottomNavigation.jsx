@@ -44,7 +44,7 @@ export default function BottomNav() {
     <View style={styles.bottomNavContainer}>
       <View style={styles.itemContainer}>
         <Icon style={styles.iconWhite} name="person" />
-        <Link href={"/details?name=pepe&lastname=perez"}>Details</Link>
+        <Link href={"/Profile"}>Profile</Link>
       </View>
       <View style={styles.itemContainer}>
         <Icon name="home" />
@@ -55,7 +55,7 @@ export default function BottomNav() {
           <Icon name="login" />
           <Link
             href={{
-              pathname: "/login",
+              pathname: "/Login",
               params: { title: "users", description: "this is the users page" },
             }}
           >

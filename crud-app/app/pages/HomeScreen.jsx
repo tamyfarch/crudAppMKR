@@ -13,15 +13,6 @@ import BottomNav from '../componentss/BottomNavigation';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-//generate array of 10 tasks with details
-const tasks = Array.from({ length: 10 }, (v, i) => ({
-    id: i,
-    title: `Task ${i}`,
-    description: `This is the description of task ${i}`,
-    completed: false,
-}));
-
 export default function HomeScreen() {
     const [todos, setTodos] = useState([]);
 
@@ -54,8 +45,8 @@ export default function HomeScreen() {
 
   
     return (
-        <View style={styles.cooontainer}>
-            <SafeAreaView style={styles.container}>
+        <>
+            
             <Stack.Screen
                 options={{
                     title: 'Home',
@@ -64,51 +55,20 @@ export default function HomeScreen() {
                     },
                 }}
             />
-            {/*
-            <Text style={{ color: 'black' }} > Home </Text>
-            <StatusBar style="auto" />
-            <Link href={'/details?name=pepe&lastname=perez'} >
-                Go to details
-            </Link>*/}
+            <SafeAreaView style={styles.container}>
             
-
-            {/* 
-            //duplicado
-            <Link href={'/details?name=pepe&lastname=perez'} >
-                Go to details
-            </Link>
-
-            <Link href={{ pathname: '/details', params: { name: 'john', lastname: 'doe' } }} >
-                Go to details
-            </Link>
-            <Link href={{ pathname: '/pepe', params: { name: 'john', lastname: 'doe' } }} >
-                Go to dynamic route
-            </Link> */}
-
-            {/* {tasks.map((task) => (
-                <Link key={task.id} href={{ pathname: `/${task.id}`, params: { ...task } }} >
-                    <Text style={{ }} > {task.title} </Text>
-                </Link>
-            ))} */}
-            {/*<Link href={{ pathname: '/login', params: { title: 'users', description: 'this is the users page' } }} >
-                <Text style={{  }} > login </Text>
-        </Link>*/}
                 <TopPage/>
                 <AddItem onAddTodo={handleAddTodo} />
                 <List todos={todos} setTodos={setTodos} />
             </SafeAreaView>
             <View style={styles.bottomNavContainer}>
-                <BottomNav/>
+                <BottomNav />
             </View>
-        </View>
+        </>
     );
 }
 
 const styles = StyleSheet.create({
-    cooontainer: {
-        flex:1,
-        justifyContent: 'space-between'
-    },
     container: {
          flex: 1,
         // backgroundColor: '#25292e',

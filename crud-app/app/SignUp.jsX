@@ -39,7 +39,7 @@ const SignUp = () => {
     };
 
     const onLoginPress = () => {
-        router.push('/login');
+        router.push('/Login');
     };
 
 
