@@ -39,6 +39,7 @@ export default function AddItem({ onAddTodo }) {
 
 const styles = StyleSheet.create({
     container: {
+        marginTop: 24,
         flexDirection: 'row',
         alignItems: 'center',
     },

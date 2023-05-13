@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View, Text, Alert, Modal, Pressable } from 'react-native';
-import { collection, addDoc, getDocs, deleteDoc, updateDoc, doc, where, query } from "firebase/firestore";
-import { app, database } from "../../firebase";
+import { updateDoc, doc } from "firebase/firestore";
+import { database } from "../../firebase";
 
 export default function EditUser({ todo, setModalVisible }) {
   const [updatedName, setUpdatedName] = useState();
@@ -47,6 +47,7 @@ export default function EditUser({ todo, setModalVisible }) {
         name: name
       }).then(() => {
         console.log('updated')
+        setModalVisible(false)
       }).catch((error) => {
         console.log(error)
       })

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Modal, Pressable, ScrollView } from 'react-native';
 import ListItem from './ListItem';
 import EditItem from './EditItem';
-import { Button, Icon } from 'react-native-elements'
-import { Stack, usePathname, useRouter, useSearchParams } from "expo-router";
-import { collection, addDoc, getDocs, deleteDoc, updateDoc, doc, where, query } from "firebase/firestore";
-import { app, database } from '../../firebase';
+import { Icon } from 'react-native-elements'
+import { useRouter } from "expo-router";
+import { collection, getDocs, deleteDoc, doc, where, query } from "firebase/firestore";
+import { database } from '../../firebase';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 
@@ -13,16 +13,11 @@ export default function List({ todos, setTodos }) {
   const auth = getAuth();
   const user = auth.currentUser;
   console.log(user, 'user afsdfasdfasdfasdf')
-  const collectionRef = collection(database, "user_tasks");
   const [editTodo, setEditTodo] = useState(null);
   const [deleteTodo, setDeleteTodo] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [tasks, setTasks] = useState([])
-  const [ taskId, setTaskId ] = useState('')
-  const router = useRouter();
-
-/*   const uid = user.uid */
 
   /*const deleteTask = (task) => {
     setTodos(todos.filter(el => el.id !== task.id))
@@ -32,10 +27,8 @@ export default function List({ todos, setTodos }) {
 
   const deleteTask = async (deleteTodo) => {
     try {
-      // Delete the document with the specified ID
       await deleteDoc(doc(database, 'user_tasks', deleteTodo.id));
       console.log(item.id)
-      // Remove the deleted task from the list of tasks
       const updatedTodos = todos.filter((todo) => todo.id !== deleteTodo.id);
       setTodos(updatedTodos);
       setDeleteTodo(null)
@@ -46,10 +39,6 @@ export default function List({ todos, setTodos }) {
     }
   };
   
-
-  
-  
-
   /* updateDoc(doc(database, 'user_tasks'), {
     task_data: updatedTodos
   }).then(() => {
@@ -69,60 +58,43 @@ export default function List({ todos, setTodos }) {
     setDeleteModalVisible(true)
   };
 
- /*  const getData = () => {
-    getDocs(collectionRef)
-    .then((response) => {
-      setTasks(response.docs.map((item) => {
-          return item.data()
-      }))
-    })
-  } */
-
   const getData = () => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
         getDocs(query(collection(database, "user_tasks"), where('uid','==', user.uid))).then(docSnap => {
           setTasks(docSnap.docs.map((item) => {
             return { ...item.data(), id: item.id }
         }))
     });
-        // ...
-      } else {
-        // User is signed out
-        // ...
       }
     });
-    
   }
 
   useEffect(() => {
     getData();
   }, [todos]);
 
-
-  console.log(tasks, 'tasks')
-
-  if (editTodo) {
+  {/* Inicio modal para editar tarea */}
+  if (modalVisible) {
     return <View style={styles.centeredView}>
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          setModalVisible(!modalVisible);
+          setModalVisible(false);
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.buttonText}>Edit Your Task</Text>
-            <EditItem todo={editTodo} />
+            <EditItem todo={editTodo} setModalVisible={setModalVisible}/>
           </View>
         </View>
       </Modal>
     </View>
   }
+  {/* Fin modal para editar tarea */}
 
   return (
     <View>
@@ -142,7 +114,8 @@ export default function List({ todos, setTodos }) {
               <Icon name='delete' />
               <Text style={styles.deleteButton}>Delete</Text>
             </TouchableOpacity>
-            
+
+            {/* Inicio modal para eliminar tarea */}
             {deleteModalVisible ?
               <Modal
                 animationType="slide"
@@ -170,6 +143,7 @@ export default function List({ todos, setTodos }) {
                 </View>
               </Modal>:<View></View>
             }
+            {/* Fin modal para eliminar tarea */}
           </View>
         )
       })}

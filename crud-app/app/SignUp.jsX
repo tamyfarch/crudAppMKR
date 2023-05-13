@@ -1,12 +1,11 @@
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
-
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'expo-router';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, addDoc, collection } from "firebase/firestore";
-import { app, database } from '../firebase';
+import { addDoc, collection } from "firebase/firestore";
+import { database } from '../firebase';
 
 const EMAIL_REGEX =
     /^[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/;

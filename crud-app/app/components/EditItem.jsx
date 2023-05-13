@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View, Text, Alert, Modal, Pressable } from 'react-native';
-import { Stack, usePathname, useRouter, useSearchParams } from "expo-router";
-import { collection, addDoc, getDocs, deleteDoc, updateDoc, doc, where, query } from "firebase/firestore";
-import { app, database } from '../../firebase';
+import { updateDoc, doc } from "firebase/firestore";
+import { database } from '../../firebase';
 
 
-export default function EditItem({ todo }) {
-  const router = useRouter();
-
+export default function EditItem({ todo, setModalVisible }) {
   const [updatedText, setUpdatedText] = useState(todo.text);
   
   const [id, setUid] = useState(todo.id);
@@ -19,18 +16,13 @@ export default function EditItem({ todo }) {
         task_data: updatedText
       }).then(() => {
         console.log('updated')
+        setModalVisible(false)
       }).catch((error) => {
         console.log(error)
       })
     }
     else{
-      updateDoc(doc(database, 'user_tasks', id), {
-        task_data: text
-      }).then(() => {
-        console.log('updated')
-      }).catch((error) => {
-        console.log(error)
-      })
+        setModalVisible(false)
     }
   };
 

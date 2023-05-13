@@ -3,31 +3,23 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
-  SafeAreaView,
-  Container,
   TouchableOpacity,
   Modal,
-  Pressable,
-  TextInput,
   Image,
 } from "react-native";
 import { Icon } from "react-native-elements";
 import BottomNav from "./componentss/BottomNavigation";
 import EditUser from "./componentss/EditUser";
 import { collection, addDoc, getDocs, deleteDoc, updateDoc, doc, where, query } from "firebase/firestore";
-import { app, database } from "../firebase";
-import { ScrollView } from "react-native-gesture-handler";
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { database } from "../firebase";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default function Profile() {
   const [modalVisible, setModalVisible] = useState(false);
   const [arrayD, setArrayD] = useState([]);
 
-  const [dataChange, setDataChange] = useState('')
-
     const auth = getAuth();
-  const getData = () => {
+    const getData = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         getDocs(query(collection(database, "users"), where('uid', '==', user.uid))).then(docSnap => {
@@ -35,11 +27,7 @@ export default function Profile() {
             return { ...item.data(), id: item.id }
           }))
         });
-        // ...
-      } else {
-        // User is signed out
-        // ...
-      }
+      } 
     });
 
   }
@@ -49,6 +37,7 @@ export default function Profile() {
       getData();
   }, []);
 
+  {/* Inicio modal editar tarea */}
   if (modalVisible) {
     return (
       <View style={styles.centeredView}>
@@ -70,6 +59,8 @@ export default function Profile() {
       </View>
     );
   }
+  {/* Fin modal editar tarea */}
+
 
   return (
     <View style={styles.cooontainer}>

@@ -1,15 +1,12 @@
 import "expo-router/entry";
-import { useRouter, useSearchParams } from "expo-router";
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import { Link, Stack } from "expo-router";
-import { Icon } from 'react-native-elements'
+import { Stack } from "expo-router";
 import React, { useState, useEffect } from 'react';
 
-import AddItem from '../componentss/AddItem';
-import List from '../componentss/List';
-import TopPage from '../componentss/TopPage';
-import BottomNav from '../componentss/BottomNavigation';
+import AddItem from '../components/AddItem';
+import List from '../components/List';
+import TopPage from '../components/TopPage';
+import BottomNav from '../components/BottomNavigation';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -56,7 +53,6 @@ export default function HomeScreen() {
                 }}
             />
             <SafeAreaView style={styles.container}>
-            
                 <TopPage/>
                 <AddItem onAddTodo={handleAddTodo} />
                 <List todos={todos} setTodos={setTodos} />

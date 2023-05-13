@@ -2,21 +2,18 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  Image,
   StyleSheet,
-  useWindowDimensions,
   ScrollView,
-  TextInput,
   Alert,
 } from "react-native";
 import BottomNav from "./componentss/BottomNavigation";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { auth } from "../firebase";
 
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useRouter } from "expo-router";
 
 const EMAIL_REGEX =

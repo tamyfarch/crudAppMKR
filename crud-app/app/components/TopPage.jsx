@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from "expo-router";
-import { TouchableOpacity, StyleSheet, Text, View, Button, TextInput } from 'react-native';
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
-import { collection, addDoc, getDocs, deleteDoc, updateDoc, doc, where, query } from "firebase/firestore";
-import { app, database } from "../../firebase";
+import { StyleSheet, Text, View } from 'react-native';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { collection, getDocs, where, query } from "firebase/firestore";
+import { database } from "../../firebase";
 
 export default function TopPage() {
     const [name, setName] = useState([])
@@ -18,11 +17,7 @@ export default function TopPage() {
                 return { ...item.data(), id: item.id }
               }))
             });
-            // ...
-          } else {
-            // User is signed out
-            // ...
-          }
+          } 
         });
     
       }
@@ -34,10 +29,9 @@ export default function TopPage() {
 
     return (
         <View style={styles.container}>
-            
             {name.map((item, index) => {
           return (
-            <Text style={styles.title} key={index} id={item.uid}>¡Hola {item.name}!</Text>
+            <Text style={styles.title} key={index} id={item.uid}>Welcome {item.name}</Text>
           )
         })}
         </View>
