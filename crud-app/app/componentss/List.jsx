@@ -143,7 +143,7 @@ export default function List({ todos, setTodos }) {
               <Text style={styles.deleteButton}>Delete</Text>
             </TouchableOpacity>
             
-            {deleteModalVisible &&
+            {deleteModalVisible ?
               <Modal
                 animationType="slide"
                 transparent={true}
@@ -168,7 +168,7 @@ export default function List({ todos, setTodos }) {
                     </View>
                   </View>
                 </View>
-              </Modal>
+              </Modal>:<View></View>
             }
           </View>
         )

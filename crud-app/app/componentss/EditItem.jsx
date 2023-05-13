@@ -9,6 +9,7 @@ export default function EditItem({ todo }) {
   const router = useRouter();
 
   const [updatedText, setUpdatedText] = useState(todo.text);
+  
   const [id, setUid] = useState(todo.id);
   const [text, setText] = useState(todo.text);
 

@@ -14,19 +14,14 @@ import {
 } from "react-native";
 import { Icon } from "react-native-elements";
 import BottomNav from "./componentss/BottomNavigation";
+import EditUser from "./componentss/EditUser";
 import { collection, addDoc, getDocs, deleteDoc, updateDoc, doc, where, query } from "firebase/firestore";
 import { app, database } from "../firebase";
 import { ScrollView } from "react-native-gesture-handler";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
-import { EditUser } from './componentss/EditUser'
 
 export default function Profile() {
-  const [editTodo, setEditTodo] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [nameU, setNameU] = useState("");
-  const [usernameU, setusernameU] = useState("");
-  const [emailU, setEmailU] = useState("");
-  const [getEmail, setGetEmail] = useState('1234')
   const [arrayD, setArrayD] = useState([]);
 
   const [dataChange, setDataChange] = useState('')
@@ -49,11 +44,10 @@ export default function Profile() {
 
   }
 
-  console.log(arrayD[0])
 
   useEffect(() => {
       getData();
-  }, [arrayD]);
+  }, []);
 
   if (modalVisible) {
     return (
@@ -101,14 +95,12 @@ export default function Profile() {
           return (
             <View style={styles.centeredList}>
               <View style={styles.borderBottom}>
-                <Text style={styles.userInfo} key={index} id={item.uid} >{item.name}</Text>
+                <Text style={styles.userInfo} key={index} id={item.uid} >Name: {item.name}</Text>
               </View>
               <View style={styles.borderBottom}>
-                <Text style={styles.userInfo} key={index} id={item.uid} >{item.username}</Text>
+                <Text style={styles.userInfo} key={index} id={item.uid} >UserName: {item.username}</Text>
               </View>
-              <View style={styles.borderBottom}>
-                <Text style={styles.userInfo} key={index} id={item.uid} >{item.email}</Text>
-              </View>
+                <Text style={styles.userInfo} key={index} id={item.uid} >Email: {item.email}</Text>
             </View>
           )
         })}

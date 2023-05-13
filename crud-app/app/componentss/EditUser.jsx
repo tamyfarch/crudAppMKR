@@ -4,25 +4,58 @@ import { collection, addDoc, getDocs, deleteDoc, updateDoc, doc, where, query } 
 import { app, database } from "../../firebase";
 
 export default function EditUser({ todo, setModalVisible }) {
-  const [updatedName, setUpdatedName] = useState('');
-  const [updatedUserName, setUpdatedUserName] = useState('');
-  const [name, setName] = useState(todo.name)
-  const [username, setUsername] = useState(todo.username)
-
-  console.log(updatedName)
-  console.log(updatedUserName)
-
-
-  const [id, setUid] = useState(todo.id);
+  const [updatedName, setUpdatedName] = useState();
+  const [updatedUserName, setUpdatedUserName] = useState();
+  const [id] = useState(todo.id);
+  const [name] = useState(todo.name);
+  const [username] = useState(todo.username);
 
   const handleSaveUpdate = () => {
-    if (name !== updatedName || username !== updatedUserName) {
+    if(updatedName!=name && updatedUserName!=username){
       updateDoc(doc(database, 'users', id), {
         name: updatedName,
         username: updatedUserName
       }).then(() => {
         console.log('updated')
         setModalVisible(false)
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
+    else if(updatedName!=name){
+      updateDoc(doc(database, 'users', id), {
+        name: updatedName
+      }).then(() => {
+        console.log('updated')
+        setModalVisible(false)
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
+    else if(updatedUserName!=username){
+      updateDoc(doc(database, 'users', id), {
+        username: updatedUserName
+      }).then(() => {
+        console.log('updated')
+        setModalVisible(false)
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
+    else if (updatedName==name){
+      updateDoc(doc(database, 'users', id), {
+        name: name
+      }).then(() => {
+        console.log('updated')
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
+    else if (updatedUserName==username){
+      updateDoc(doc(database, 'users', id), {
+        username: username
+      }).then(() => {
+        console.log('updated')
       }).catch((error) => {
         console.log(error)
       })
